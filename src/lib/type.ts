@@ -9,7 +9,7 @@ export type Order = {
 	id: number
 	created_at: number
 	status: Status
-	products: Product[]
+	OrderItem: OrderItem[]
 	total: number
 }
 
@@ -48,4 +48,10 @@ export type CustomerDetails = {
 	city: string
 	postalCode: string
 	address: string
+}
+
+export type Receit = {
+	CustomerDetails: CustomerDetails
+	Order: Order
+	Payment: Payment
 }
