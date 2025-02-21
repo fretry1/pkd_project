@@ -1,4 +1,30 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
 
-<p> Hej Du </p>
+	const sendFetch = () => {
+			// implement fetch
+		json = "this will be the fetched json"
+	}
+
+	let json = $state("")
+
+</script>
+
+<h1>db.json testing</h1>
+
+<button
+	onclick={sendFetch}
+>
+	send fetch request
+</button>
+
+<textarea
+	bind:value={json}
+></textarea>
+
+
+<style>
+	textarea {
+		min-height: 300px;
+		min-width: 400px;
+	}
+</style>
