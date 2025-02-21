@@ -27,12 +27,12 @@ export type OrderItem = {
 export type Status = keyof typeof STATUS
 
 export const STATUS = {
-	CREATED: 'PLACED',
+	CREATED: 'CREATED',
 	PLACED: 'PLACED',
 	PAYMENT_COMPLETE: 'PAYMENT_COMPLETE',
 	SHIPPED: 'SHIPPED',
 	IN_TRANSIT: 'IN_TRANSIT',
-	DELIVERED: 'DELIVIRED'
+	DELIVERED: 'DELIVERED'
 }
 
 export type Payment = {
@@ -50,7 +50,7 @@ export type CustomerDetails = {
 	address: string
 }
 
-export type Receit = {
+export type Receipt = {
 	CustomerDetails: CustomerDetails
 	Order: Order
 	Payment: Payment
