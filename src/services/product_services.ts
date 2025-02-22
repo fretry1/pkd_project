@@ -7,3 +7,5 @@ import type {
 	CustomerDetails,
 	Receipt
 } from '$lib/type'
+
+function get_all_producs() {}
