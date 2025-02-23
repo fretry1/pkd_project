@@ -9,7 +9,7 @@ export type Order = {
 	id: number
 	created_at: number
 	status: Status
-	OrderItem: OrderItem[]
+	Items: Map<number, OrderItem>
 	total: number
 }
 

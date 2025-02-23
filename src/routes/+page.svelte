@@ -1,41 +1,34 @@
-<script lang="ts"> 
+<script lang="ts">
 
-	const sendFetch = async () => {
-        console.debug("inside")
-			// implement fetch
-        let res = await fetch("https://my-json-server.typicode.com/fretry1/pkd_project/example", {
-            method: "GET",
-            headers: {
-                "accept" : "application/json"
-            }
-        })
-        if (!res.ok) {             
-            json = `failed: res ${res.status}` 
-            return      
-        }
-
-        console.debug("afterRes")
-
-        const obj = await res.json
-
-        console.debug("afterObj")
-
-        
-
-            
-        
-		json = JSON.stringify(obj)
+	const createOrder = async () => {
+		let res = await fetch("http://localhost:8080/orders", {
+			method: "POST",
+			headers: {
+				'accept': 'application/json'
+			}
+		})
+		console.log(res.status)
+		if (!res.ok) {
+			json = `failed: res ${res.status}`
+			return
+		}
+		const obj = await res.json()
+		json = JSON.stringify(obj, null, 2)
 	}
 
-	let json = $state("")
+	let json = $state('')
 
 </script>
 
 <h1>db.json testing</h1>
+<div>
+	<div>
+
+	</div>
+</div>
 
 <button
-	onclick={() => sendFetch()}
-    
+	onclick={() => createOrder()}
 >
 	send fetch request
 </button>
@@ -46,8 +39,8 @@
 
 
 <style>
-	textarea {
-		min-height: 300px;
-		min-width: 400px;
-	}
+  textarea {
+    min-height: 300px;
+    min-width: 400px;
+  }
 </style>
