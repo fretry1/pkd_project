@@ -6,7 +6,7 @@ import type {
 	Payment,
 	CustomerDetails,
 	Receipt
-} from '$lib/type'
+} from "$lib/type"
 
 function create_empty_order() {}
 
@@ -18,7 +18,7 @@ function remove_order() {}
 
 const banan: Product = {
 	id: 5,
-	titel: 'banan',
-	description: 'en frukt',
+	titel: "banan",
+	description: "en frukt",
 	price: 10
 }
