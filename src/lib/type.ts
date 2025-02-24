@@ -1,8 +1,13 @@
 export type Product = {
-	id: number
-	titel: string
+	id: string
+	title: string
 	description: string
 	price: number
+}
+
+export type OrderItem = {
+	product: Product
+	quantity: number
 }
 
 export type Order = {
@@ -13,35 +18,16 @@ export type Order = {
 	total: number
 }
 
-export type discount = {
-	code: string
-	amount: number
-}
-
-export type OrderItem = {
-	product: number
-	quantity: number
-	discountCode: string
-}
-
-export type Status = keyof typeof STATUS
-
-export const STATUS = {
-	CREATED: 'CREATED',
-	PLACED: 'PLACED',
-	PAYMENT_COMPLETE: 'PAYMENT_COMPLETE',
-	SHIPPED: 'SHIPPED',
-	IN_TRANSIT: 'IN_TRANSIT',
-	DELIVERED: 'DELIVERED'
-}
-
 export type Payment = {
+	id: string
+	orderId: string
 	amount: number
-	transactionDate: string
+	issuedAt: string
+	customerDetails: CustomerDetails
 }
 
 export type CustomerDetails = {
-	SSN: string
+	Ssn: string
 	name: string
 	cardNumber: string
 	country: string
@@ -51,7 +37,21 @@ export type CustomerDetails = {
 }
 
 export type Receipt = {
-	CustomerDetails: CustomerDetails
-	Order: Order
-	Payment: Payment
+	order: Order
+	payment: Payment
+}
+
+export type Status = keyof typeof STATUS
+
+export const STATUS = {
+	CREATED: "CREATED",
+	PAYMENT_COMPLETE: "PAYMENT_COMPLETE",
+	SHIPPED: "SHIPPED",
+	IN_TRANSIT: "IN_TRANSIT",
+	DELIVERED: "DELIVERED"
+}
+
+export type AppError = {
+	code: string
+	message: string
 }
