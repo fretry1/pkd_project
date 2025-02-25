@@ -1,5 +1,15 @@
 <script lang="ts">
 
+import type {
+	Product,
+	Order,
+	OrderItem,
+	STATUS,
+	Payment,
+	CustomerDetails,
+	Receipt
+} from "$lib/type"
+
 	const createOrder = async () => {
 		let res = await fetch("http://localhost:8080/orders", {
 			method: "POST",
@@ -36,6 +46,8 @@
 
 	let json2 = $state('')
 
+ 
+
     let deleteInput = ""
 
     const DeleteOrder = async () => {
@@ -56,8 +68,51 @@
 
 	let json3 = $state('')
 
+    const getProductList = async () => {
+		let res = await fetch("http://localhost:8080/products", {
+			method: "GET",
+			headers: {
+				'accept': 'application/json'
+			}
+		})
+		console.log(res.status)
+		if (!res.ok) {
+			json4 = `failed: res ${res.status}`
+			return
+		}
+		const obj = await res.json()
+		json4 = JSON.stringify(obj, null, 2)
+	}
 
+	let json4 = $state('')
 
+    
+
+    let updateOrderInput = ""
+    let updateProductsInput = ""
+
+    const updateOrderProducts = async () => {
+		let res = await fetch(`http://localhost:8080/orders/${updateOrderInput}/products/${updateProductsInput}`, {
+			method: "PUT",
+			headers: {
+				'accept': 'application/json',
+            
+			},
+            body: JSON.stringify({ quantity: 1 })
+            
+		})
+		console.log(res.status)
+		if (!res.ok) {
+			json5 = `failed: res ${res.status}`
+			return
+		}
+		const obj = await res.json()
+		json5 = JSON.stringify(obj, null, 2)
+	}
+
+	let json5 = $state('')
+
+    
 
 
 </script>
@@ -69,14 +124,9 @@
 	</div>
 </div>
 
-
-
-
-
-
-
-
 <div>
+
+    <p> Create new order</p>
 
     <button
 	    onclick={() => createOrder()}
@@ -91,6 +141,8 @@
 </div>
 
 <div>
+
+    <p> Get all orders / delete order</p>
 
     <button
 	    onclick={() => getAllOrders()}
@@ -115,6 +167,50 @@
     bind:value={deleteInput}
     />   
 </div>
+
+<div>
+
+    <p> Get product list</p>
+
+    <button
+	    onclick={() => getProductList()}
+    >
+	    get products
+    </button>
+
+    <textarea
+	bind:value={json4}
+    ></textarea>
+
+</div>
+
+<div>
+    <p> Update order with new products</p>
+    
+    <input type="text" bind:value={updateProductsInput} 
+    placeholder="enter product ID"
+    >
+
+    <input type="text" bind:value={updateOrderInput} 
+    placeholder="enter Order ID"
+    >
+
+
+    <button
+
+	onclick={() => updateOrderProducts()}
+    >
+	Execute
+    </button>  
+ 
+    
+    
+    <textarea
+	bind:value={json5}
+    ></textarea>
+</div>
+
+
 
 
 
