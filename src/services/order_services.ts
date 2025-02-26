@@ -17,8 +17,8 @@ function modify_order_status() {}
 function remove_order() {}
 
 const banan: Product = {
-	id: 5,
-	titel: "banan",
+	id: "5",
+	title: "banan",
 	description: "en frukt",
 	price: 10
 }
