@@ -55,3 +55,6 @@ export type AppError = {
 	code: string
 	message: string
 }
+
+export type PResult<T, E> = Promise<Result<T, E>>
+export type Result<T, E> = [T, null] | [null, E]
