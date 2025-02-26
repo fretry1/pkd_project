@@ -6,9 +6,12 @@ import type {
 	Payment,
 	CustomerDetails,
 	Receipt
-} from '$lib/type'
+} from "$lib/type"
+import { apiCommunicator } from "./api-client"
 
-function create_customer_details() {}
+function create_customer_details() {
+	apiCommunicator.post("/payment")
+}
 
 function get_order_details() {}
 

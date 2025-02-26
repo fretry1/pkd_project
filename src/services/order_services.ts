@@ -7,14 +7,19 @@ import type {
 	CustomerDetails,
 	Receipt
 } from "$lib/type"
+import { apiCommunicator } from "./api-client"
 
-function create_empty_order() {}
+function create_empty_order() {
+	apiCommunicator.post("/orders")
+}
 
 function modify_order_products() {}
 
 function modify_order_status() {}
 
-function remove_order() {}
+function remove_order() {
+	apiCommunicator.delete("orders", "{id}")
+}
 
 const banan: Product = {
 	id: 5,

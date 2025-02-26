@@ -6,6 +6,12 @@ import type {
 	Payment,
 	CustomerDetails,
 	Receipt
-} from '$lib/type'
+} from "$lib/type"
+import { apiCommunicator } from "./api-client"
 
-function get_all_producs() {}
+async function getAllProducts() {
+	const [product, err] = await apiCommunicator.get("/products")
+	if (err) {
+		return
+	}
+}
