@@ -1,20 +1,10 @@
 <script lang="ts">
 
-import type {
-	Product,
-	Order,
-	OrderItem,
-	STATUS,
-	Payment,
-	CustomerDetails,
-	Receipt
-} from "$lib/type"
-
 	const createOrder = async () => {
 		let res = await fetch("http://localhost:8080/orders", {
 			method: "POST",
 			headers: {
-				'accept': 'application/json'
+				accept: "application/json"
 			}
 		})
 		console.log(res.status)
@@ -26,13 +16,13 @@ import type {
 		json1 = JSON.stringify(obj, null, 2)
 	}
 
-	let json1 = $state('')
+	let json1 = $state("")
 
-    const getAllOrders = async () => {
+	const getAllOrders = async () => {
 		let res = await fetch("http://localhost:8080/orders", {
 			method: "GET",
 			headers: {
-				'accept': 'application/json'
+				accept: 'application/json'
 			}
 		})
 		console.log(res.status)
@@ -46,15 +36,13 @@ import type {
 
 	let json2 = $state('')
 
- 
+	let deleteInput = $state("")
 
-    let deleteInput = ""
-
-    const DeleteOrder = async () => {
+	const DeleteOrder = async () => {
 		let res = await fetch(`http://localhost:8080/orders/${deleteInput}`, {
 			method: "DELETE",
 			headers: {
-				'accept': 'application/json'
+				accept: "application/json"
 			}
 		})
 		console.log(res.status)
@@ -68,7 +56,7 @@ import type {
 
 	let json3 = $state('')
 
-    const getProductList = async () => {
+	const getProductList = async () => {
 		let res = await fetch("http://localhost:8080/products", {
 			method: "GET",
 			headers: {
@@ -88,10 +76,10 @@ import type {
 
     
 
-    let updateOrderInput = ""
-    let updateProductsInput = ""
+    let updateOrderInput = $state("")
+    let updateProductsInput = $state("")
 
-    const updateOrderProducts = async () => {
+	const updateOrderProducts = async () => {
 		let res = await fetch(`http://localhost:8080/orders/${updateOrderInput}/products/${updateProductsInput}`, {
 			method: "PUT",
 			headers: {
@@ -117,16 +105,19 @@ import type {
 
 </script>
 
+
+
+
+
+
+
 <h1>db.json testing</h1>
 <div>
-	<div>
-
-	</div>
+	<div></div>
 </div>
 
-<div>
 
-    <p> Create new order</p>
+<div>
 
     <button
 	    onclick={() => createOrder()}
@@ -134,15 +125,10 @@ import type {
 	    create order
     </button>
 
-    <textarea
-	bind:value={json1}
-    ></textarea>
-
-</div>
+		<textarea bind:value={json1}></textarea>
+	</div>
 
 <div>
-
-    <p> Get all orders / delete order</p>
 
     <button
 	    onclick={() => getAllOrders()}
@@ -212,63 +198,11 @@ import type {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div></div>
 
 <style>
-    textarea {
-      min-height: 300px;
-      min-width: 400px;
-    }
-  </style>
-
-
-
-
-
-
+	textarea {
+		min-height: 300px;
+		min-width: 400px;
+	}
+</style>

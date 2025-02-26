@@ -6,7 +6,8 @@ import type {
 	Payment,
 	CustomerDetails,
 	Receipt
-} from '$lib/type'
+} from "$lib/type"
+import { apiCommunicator } from "./api-client"
 
 function initate_transport() {}
 

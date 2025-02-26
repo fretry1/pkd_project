@@ -9,29 +9,27 @@ import type {
 } from "$lib/type"
 import { apiCommunicator } from "./api-client"
 
-function create_empty_order(url: string,): Result{
-    //take irl return 
+function create_empty_order() {}
 
+async function getOrder(orderID: string) {
+	const [order, err] = await apiCommunicator.get<Order>(`/orders/${orderID}`)
+	if (err) {
+	}
+
+	return order
 }
 
-async function getOrder (orderID: string)  {
-    const [order, err] = await apiCommunicator.get<Order>(`/orders/${orderID}`) 
-    if(err) {
-    }
-
-    return order
+async function modifyOrderProducts(url: string, orderID: number, productID: number) {
+	const [order, err] = await apiCommunicator.put<Order>(`/orders/${orderID}/products/${productID}`)
+	if (err) {
+	}
 }
 
-async function modifyOrderProducts(url: string, orderID: number, productID: number){
-    const [order, err] = await apiCommunicator.put<Order>(`/orders/${orderID}/products/${productID}`) 
-    if(err) {        
-    }
-     
+function modify_order_status(url: string) {}
+
+function remove_order() {
+	apiCommunicator.delete("orders", "{id}")
 }
-
-function modify_order_status(url: string, ) {}
-
-function remove_order() {}
 
 const banan: Product = {
 	id: "5",
