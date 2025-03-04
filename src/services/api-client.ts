@@ -1,53 +1,64 @@
-import type { AppError, Result } from "$lib/type"
+import type { AppError, PResult, Result } from "$lib/type"
 
 const BASE_URL = "http://localhost:8080"
-const example = "http://localhost:8080/${uri}"
+const example = "http://localhost:8080${uri}"
 
-// possible arguments:
-// URL
-// URL - uri
-// Body
+/**
+ * @param uri -
+ * @param method - A valid HTTP verb
+ * @param body -
+ * @return - Promise<[T, null] | [null, E]>
+ */
 
 export const apiCommunicator = {
-	async request<T>(/* arguments */): Promise<T> {},
-
-	async get<T>(/* arguments */): Promise<T> {},
-
-	async post<T>(uri: string): Promise<string> {
-		let res = await fetch(`${BASE_URL}/${uri}`, {
-			method: "POST",
+	async request<T>(uri: string, method: string, body?: any): PResult<T, AppError> {
+		const payload = body ? JSON.stringify(body) : null
+		let res = await fetch(`${BASE_URL}${uri}`, {
+			method: method,
 			headers: {
 				accept: "application/json"
 			},
-			body: JSON.stringify({})
+			body: payload
 		})
 
-		const obj = await res.json()
+		console.log(res.status)
+		let resObj = await res.json()
 		if (!res.ok) {
-			const errors = `failed: res ${res.status}`
-			return Promise.reject(errors)
+			let err: AppError = JSON.parse(resObj)
+			// let err: AppError = { code: "", message: "" }
+			console.log(err)
+			return [null, err]
 		}
 
-		return JSON.stringify(obj, null, 2)
+		return [resObj, null]
 	},
 
-	async put<T>(/* arguments */): Promise<T> {},
+	async get<T>(uri: string): PResult<T, AppError> {
+		return this.request(uri, "GET")
+	},
 
-	async delete(uri: string, deleteInput: string): Promise<boolean> {
-		let res = await fetch(`${BASE_URL}${deleteInput}`, {
+	async post<T>(uri: string): PResult<T, AppError> {
+		return this.request(uri, "POST")
+	},
+
+	async put<T>(uri: string, body?: any): PResult<T, AppError> {
+		return this.request(uri, "PUT", body)
+	},
+
+	async delete(uri: string): PResult<null, AppError> {
+		return this.request(uri, "DELETE")
+	},
+
+	async delUgly(uri: string): Promise<void | number> {
+		let res = await fetch(`${BASE_URL}${uri}`, {
 			method: "DELETE",
 			headers: {
 				accept: "application/json"
-			},
-			body: JSON.stringify({})
+			}
 		})
-
-		const obj = await res.json()
 		if (!res.ok) {
-			const errors = `failed: res ${res.status}`
-			return Promise.reject(errors)
+			console.log(res.status)
+			return res.status
 		}
-
-		return JSON.stringify(obj, null, 2)
 	}
 }

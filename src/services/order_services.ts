@@ -5,30 +5,41 @@ import type {
 	STATUS,
 	Payment,
 	CustomerDetails,
-	Receipt
+	Receipt,
+	PResult,
+	AppError
 } from "$lib/type"
-import { apiCommunicator } from "./api-client"
+import { apiCommunicator as api } from "./api-client"
 
-function create_empty_order() {}
-
-async function getOrder(orderID: string) {
-	const [order, err] = await apiCommunicator.get<Order>(`/orders/${orderID}`)
-	if (err) {
-	}
-
-	return order
+export async function createEmptyOrder(): PResult<Order, AppError> {
+	return await api.post("/orders")
 }
 
-async function modifyOrderProducts(url: string, orderID: number, productID: number) {
-	const [order, err] = await apiCommunicator.put<Order>(`/orders/${orderID}/products/${productID}`)
-	if (err) {
-	}
+export async function getAll(): PResult<Order[], AppError> {
+	return api.get("/orders")
 }
 
-function modify_order_status(url: string) {}
+export async function modifyOrderProducts(
+	orderId: string,
+	productId: string,
+	quantity: number
+): PResult<Order, AppError> {
+	return api.put(orderId + "/products/" + productId, { quantity })
+}
 
-function remove_order() {
-	apiCommunicator.delete("orders", "{id}")
+export async function modifyOrderStatus(
+	orderId: string,
+	options: string
+): PResult<Order, AppError> {
+	const status = options.toUpperCase()
+	return api.put(orderId, { status })
+}
+
+export async function removeOrder(id: string): Promise<void | number> {
+	if (id === "ALL") {
+		return api.delUgly(`/orders`)
+	}
+	return api.delUgly(`/orders/${id}`)
 }
 
 const banan: Product = {

@@ -6,4 +6,5 @@ import type {
 	Payment,
 	CustomerDetails,
 	Receipt
-} from '$lib/type'
+} from "$lib/type"
+import { apiCommunicator as apiComm } from "./api-client"

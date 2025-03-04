@@ -7,16 +7,16 @@ import type {
 	CustomerDetails,
 	Receipt
 } from "$lib/type"
-import { apiCommunicator } from "./api-client"
+import { apiCommunicator as api } from "./api-client"
 
-function create_customer_details() {
-	apiCommunicator.post("/payment")
+export async function createCustomerCetails() {
+	return api.post("/payment")
 }
 
-function get_order_details() {}
+export async function getOrderDetails() {}
 
-function initiate_payment() {}
+export async function initiatePayment() {}
 
-function issue_payment() {}
+export async function issuePayment() {}
 
-function create_receipt() {}
+export async function createReceipt() {}
