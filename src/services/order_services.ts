@@ -5,25 +5,46 @@ import type {
 	STATUS,
 	Payment,
 	CustomerDetails,
-	Receipt
+	Receipt,
+	PResult,
+	AppError
 } from "$lib/type"
-import { apiCommunicator } from "./api-client"
+import { apiCommunicator as api } from "./api-client"
 
-function create_empty_order() {
-	apiCommunicator.post("/orders")
+export async function createEmptyOrder(): PResult<Order, AppError> {
+	return await api.post("/orders")
 }
 
-function modify_order_products() {}
+export async function getAll(): PResult<Order[], AppError> {
+	return api.get("/orders")
+}
 
-function modify_order_status() {}
+export async function modifyOrderProducts(
+	orderId: string,
+	productId: string,
+	quantity: number
+): PResult<Order, AppError> {
+	return api.put(orderId + "/products/" + productId, { quantity })
+}
 
-function remove_order() {
-	apiCommunicator.delete("orders", "{id}")
+export async function modifyOrderStatus(
+	orderId: string,
+	options: string
+): PResult<Order, AppError> {
+	const status = options.toUpperCase()
+	return api.put(orderId, { status })
+}
+
+export async function removeOrder(id: string): Promise<void | number> {
+	if (id === "ALL") {
+		return api.delUgly(`/orders`)
+	}
+	return api.delUgly(`/orders/${id}`)
 }
 
 const banan: Product = {
-	id: 5,
-	titel: "banan",
+	id: "5",
+	title: "banan",
 	description: "en frukt",
 	price: 10
 }

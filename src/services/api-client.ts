@@ -1,100 +1,64 @@
-import type { AppError, Result } from "$lib/type"
+import type { AppError, PResult, Result } from "$lib/type"
 
 const BASE_URL = "http://localhost:8080"
-const example = "http://localhost:8080/${uri}"
+const example = "http://localhost:8080${uri}"
 
-// possible arguments:
-// URL
-// URL - uri
-// Body
+/**
+ * @param uri -
+ * @param method - A valid HTTP verb
+ * @param body -
+ * @return - Promise<[T, null] | [null, E]>
+ */
 
 export const apiCommunicator = {
-	async request<T>(uri: string, method: string, body: any): Promise<Result<T, AppError>> {
+	async request<T>(uri: string, method: string, body?: any): PResult<T, AppError> {
+		const payload = body ? JSON.stringify(body) : null
 		let res = await fetch(`${BASE_URL}${uri}`, {
-			method: "GET",
+			method: method,
 			headers: {
 				accept: "application/json"
 			},
-			body: JSON.stringify({})
+			body: payload
 		})
-		let resJson = await res.json()
+
+		console.log(res.status)
+		let resObj = await res.json()
 		if (!res.ok) {
-			let err: AppError = JSON.parse(resJson)
-			let output = [null, err]
-			return output
+			let err: AppError = JSON.parse(resObj)
+			// let err: AppError = { code: "", message: "" }
+			console.log(err)
+			return [null, err]
 		}
-		return [resJson, null]
+
+		return [resObj, null]
 	},
 
-	async get<T>(uri: string): Promise<T> {
+	async get<T>(uri: string): PResult<T, AppError> {
+		return this.request(uri, "GET")
+	},
+
+	async post<T>(uri: string): PResult<T, AppError> {
+		return this.request(uri, "POST")
+	},
+
+	async put<T>(uri: string, body?: any): PResult<T, AppError> {
+		return this.request(uri, "PUT", body)
+	},
+
+	async delete(uri: string): PResult<null, AppError> {
+		return this.request(uri, "DELETE")
+	},
+
+	async delUgly(uri: string): Promise<void | number> {
 		let res = await fetch(`${BASE_URL}${uri}`, {
-			method: "GET",
-			headers: {
-				accept: "application/json"
-			},
-			body: JSON.stringify({})
-		})
-
-		const obj = await res.json()
-		if (!res.ok) {
-			const errors = `failed: res ${res.status}`
-			return Promise.reject(errors)
-		}
-
-		return JSON.stringify(obj, null, 2)
-	},
-
-	async post<T>(uri: string): Promise<string> {
-		let res = await fetch(`${BASE_URL}/${uri}`, {
-			method: "POST",
-			headers: {
-				accept: "application/json"
-			},
-			body: JSON.stringify({})
-		})
-
-		const obj = await res.json()
-		if (!res.ok) {
-			const errors = `failed: res ${res.status}`
-			return Promise.reject(errors)
-		}
-
-		return JSON.stringify(obj, null, 2)
-	},
-
-	async put<T>(uri: string): Promise<T> {
-		let res = await fetch(`${BASE_URL}/${uri}`, {
-			method: "PUT",
-			headers: {
-				accept: "application/json"
-			},
-			body: JSON.stringify({})
-		})
-
-		const obj = await res.json()
-		if (!res.ok) {
-			const errors = `failed: res ${res.status}`
-			return Promise.reject(errors)
-		}
-
-		return JSON.stringify(obj, null, 2)
-	},
-
-	async delete(uri: string, deleteInput: string): Promise<boolean> {
-		let res = await fetch(`${BASE_URL}${deleteInput}`, {
 			method: "DELETE",
 			headers: {
 				accept: "application/json"
-			},
-			body: JSON.stringify({})
+			}
 		})
-
-		const obj = await res.json()
 		if (!res.ok) {
-			const errors = `failed: res ${res.status}`
-			return Promise.reject(errors)
+			console.log(res.status)
+			return res.status
 		}
-
-		return JSON.stringify(obj, null, 2)
 	}
 }
