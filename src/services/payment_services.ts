@@ -1,3 +1,4 @@
+import { assets } from "$app/paths"
 import type {
 	Product,
 	Order,
@@ -5,18 +6,41 @@ import type {
 	STATUS,
 	Payment,
 	CustomerDetails,
-	Receipt
+	Receipt,
+	AppError,
+	PResult
 } from "$lib/type"
 import { apiCommunicator as api } from "./api-client"
 
-export async function createCustomerCetails() {
+export async function createCustomerCetails(): PResult<CustomerDetails, AppError> {
 	return api.post("/payment")
 }
 
-export async function getOrderDetails() {}
+/**
+ * @param id - id of the customer
+ * @return - Promise<[Order, null] | [null, E]>
+ */
+export async function getOrderDetails(id: string): PResult<Order, AppError> {
+	return api.get(`/payment/${id}/orders`)
+}
 
-export async function initiatePayment() {}
+/**
+ * @param id - id of the customer
+ * @param status - status of the specific payment of the customer
+ * @return - Promise<[Order, null] | [null, E]>
+ */
+export async function setPaymentStatus(id: string, status: string): PResult<Order, AppError> {
+	return api.put(`/payment/${id}/orders`, { status: status })
+}
 
-export async function issuePayment() {}
+/**
+ * @param id - id of the customer
+ * @return - Promise<[Order, null] | [null, E]>
+ */
+export async function createReceipt(id: string): PResult<Receipt, AppError> {
+	return api.post(`/receipt`)
+}
 
-export async function createReceipt() {}
+export async function findReceipt(id: string): PResult<Receipt, AppError> {
+	return api.get(`/receipt/${id}`)
+}

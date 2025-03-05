@@ -5,13 +5,12 @@ import type {
 	STATUS,
 	Payment,
 	CustomerDetails,
-	Receipt
+	Receipt,
+	AppError,
+	PResult
 } from "$lib/type"
 import { apiCommunicator as api } from "./api-client"
 
-export async function getAllProducts() {
-	const [product, err] = await api.get("/products")
-	if (err) {
-		return
-	}
+export async function getAllProducts(): PResult<Product[], AppError> {
+	return await api.get("/products")
 }
