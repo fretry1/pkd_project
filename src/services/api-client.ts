@@ -39,8 +39,8 @@ export const apiCommunicator = {
 		return this.request(uri, "GET")
 	},
 
-	async post<T>(uri: string): PResult<T, AppError> {
-		return this.request(uri, "POST")
+	async post<T>(uri: string, body?: any): PResult<T, AppError> {
+		return this.request(uri, "POST", body)
 	},
 
 	async put<T>(uri: string, body?: any): PResult<T, AppError> {
