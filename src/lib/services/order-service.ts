@@ -9,17 +9,17 @@ import type {
 	PResult,
 	AppError
 } from "$lib/type"
-import { apiCommunicator as api } from "./api-client"
+import { api } from "./api"
 
-export async function createEmptyOrder(): PResult<Order, AppError> {
+async function createOrder(): PResult<Order, AppError> {
 	return await api.post("/orders")
 }
 
-export async function getAll(): PResult<Order[], AppError> {
+async function getAllOrders(): PResult<Order[], AppError> {
 	return api.get("/orders")
 }
 
-export async function modifyOrderProducts(
+async function setProductOnOrder(
 	orderId: string,
 	productId: string,
 	quantity: number
@@ -27,24 +27,23 @@ export async function modifyOrderProducts(
 	return api.put(orderId + "/products/" + productId, { quantity })
 }
 
-export async function modifyOrderStatus(
-	orderId: string,
-	options: string
-): PResult<Order, AppError> {
+// No use-case yet
+async function modifyOrderStatus(orderId: string, options: string): PResult<Order, AppError> {
 	const status = options.toUpperCase()
 	return api.put(orderId, { status })
 }
 
-export async function removeOrder(id: string): Promise<void | number> {
+// No use-case yet
+async function removeOrder(id: string): Promise<void | number> {
 	if (id === "ALL") {
 		return api.delUgly(`/orders`)
 	}
 	return api.delUgly(`/orders/${id}`)
 }
 
-const banan: Product = {
-	id: "5",
-	title: "banan",
-	description: "en frukt",
-	price: 10
+export default {
+	createOrder,
+	getAllOrders,
+	setProductOnOrder
+	// ...
 }

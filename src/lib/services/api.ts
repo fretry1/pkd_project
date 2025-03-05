@@ -10,7 +10,7 @@ const example = "http://localhost:8080${uri}"
  * @return - Promise<[T, null] | [null, E]>
  */
 
-export const apiCommunicator = {
+export const api = {
 	async request(uri: string, method: string, body?: any): PResult<any, AppError> {
 		const payload = body ? JSON.stringify(body) : null
 		let res = await fetch(`${BASE_URL}${uri}`, {

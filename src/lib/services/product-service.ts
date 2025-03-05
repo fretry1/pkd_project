@@ -9,8 +9,12 @@ import type {
 	AppError,
 	PResult
 } from "$lib/type"
-import { apiCommunicator as api } from "./api-client"
+import { api } from "./api"
 
-export async function getAllProducts(): PResult<Product[], AppError> {
+async function getAllProducts(): PResult<Product[], AppError> {
 	return await api.get("/products")
+}
+
+export default {
+	getAllProducts
 }
