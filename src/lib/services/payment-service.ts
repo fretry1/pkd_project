@@ -16,11 +16,10 @@ export async function createPayment(
 	orderID: String,
 	customerDetails: CustomerDetails
 ): PResult<Payment, AppError> {
-	const payment = {
-		orderID,
-		customerDetails
-	}
-	return await api.post("/payments", payment)
+	return await api.post("/payments", {
+		orderId: orderID,
+		customerDetails: customerDetails
+	})
 }
 
 // NOT IMPLEMENTED IN BACKEND YET
