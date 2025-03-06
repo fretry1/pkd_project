@@ -44,7 +44,10 @@
 				output = stringify(err)
 			}
 			// TODO: sort products, for example by price
-			output = stringify(products)
+			if (products !== null){
+			let sortedByPrice = products.sort((a, b) => a.price - b.price)
+			output = stringify(sortedByPrice)
+			}
 		}}>
 			Load Products
 		</button>
