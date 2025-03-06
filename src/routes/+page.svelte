@@ -6,9 +6,7 @@
 
 	// Do not add any more stateful variables, use these
 	let output = $state("")
-	let input1 = $state("")
-	let input2 = $state("")
-	let input3 = $state("")
+	let input = $state("")
 
 	const stringify = (obj: any): string => {
 		return JSON.stringify(obj, null, 2)
@@ -18,11 +16,15 @@
 	const openCustomerDetailsModal = () => {
 		// ...
 	}
+
+	//Hey Frey
+	
 </script>
 
-<div class="wrapper">
 
-	<div class="output">
+
+<div class="wrapper">
+	<div class="io">
 		<textarea
 			placeholder="output"
 			bind:value={output}
@@ -32,19 +34,11 @@
 
 	<div class="input">
 		<input
-			placeholder="input1"
-			bind:value={input1}
-		/>
-		<input
-			placeholder="input2"
-			bind:value={input2}
-		/>
-		<input
-			placeholder="input3"
-			bind:value={input3}
+			placeholder="input"
+			bind:value={input}
 		/>
 
-		<button onclick={async () => {
+		<button onclick={async () => {		
 			const [products, err] = await ProductService.getAllProducts()
 			if (err) {
 				output = stringify(err)
@@ -56,6 +50,7 @@
 		</button>
 
 		<button onclick={async () => {
+		
 		const [orders, err] = await OrderService.getAllOrders()
 		if (err) {
 			output = stringify(err)
@@ -77,7 +72,8 @@
 
 		<!-- TODO: implement -->
 		<button onclick={async () => {
-		const [order, err] = await OrderService.setProductOnOrder(input1, productId, quantity)
+		
+		const [order, err] = await OrderService.setProductOnOrder(input)
 		}}>
 			Set Product On Order
 		</button>
@@ -114,7 +110,7 @@
     gap: .5rem;
   }
 
-  .output {
+  .io {
     width: 100%;
 
     & textarea {
