@@ -80,8 +80,12 @@
 		</button>
 
 		<!-- TODO: implement -->
-		<button onclick={async () => {
+		<button onclick={async () => {		
 		const [order, err] = await OrderService.setProductOnOrder(input1, input2, Number(input3))
+		if (err) {
+			output = stringify(err)
+		}
+		output = stringify(order)
 		}}>
 			Set Product On Order
 		</button>
