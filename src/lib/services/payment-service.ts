@@ -12,6 +12,17 @@ import type {
 } from "$lib/type"
 import { api } from "./api"
 
+export async function createPayment(
+	orderID: String,
+	customerDetails: CustomerDetails
+): PResult<Payment, AppError> {
+	const payment = {
+		orderID,
+		customerDetails
+	}
+	return await api.post("/payments", payment)
+}
+
 // NOT IMPLEMENTED IN BACKEND YET
 async function createCustomerDetails(): PResult<CustomerDetails, AppError> {
 	return api.post("/payment")
