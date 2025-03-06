@@ -12,27 +12,38 @@ const example = "http://localhost:8080${uri}"
 
 export const api = {
 	async request(uri: string, method: string, body?: any): PResult<any, AppError> {
-		const payload = body ? JSON.stringify(body) : null
-		let res = await fetch(`${BASE_URL}${uri}`, {
-			method: method,
-			headers: {
-				accept: "application/json"
-			},
-			body: payload
-		})
-		if (method === "DELETE" && res.ok) {
-			return [null, null]
-		}
-		console.log(res.status)
-		let resObj = await res.json()
-		if (!res.ok) {
-			let err: AppError = JSON.parse(resObj)
-			// let err: AppError = { code: "", message: "" }
-			console.log(err)
-			return [null, err]
-		}
+		try {
+			const payload = body ? JSON.stringify(body) : null
+			let res = await fetch(`${BASE_URL}${uri}`, {
+				method: method,
+				headers: {
+					accept: "application/json"
+				},
+				body: payload
+			})
+			if (method === "DELETE" && res.ok) {
+				return [null, null]
+			}
+			console.log(res.status)
+			let resObj = await res.json()
+			if (!res.ok) {
+				let err: AppError = JSON.parse(resObj)
+				// let err: AppError = { code: "", message: "" }
+				console.log(err)
+				return [null, err]
+			}
 
-		return [resObj, null]
+			return [resObj, null]
+		} catch (err) {
+			console.error("fatal error caught when interacting with the API: ", err)
+			return [
+				null,
+				{
+					code: "ApiError",
+					message: err.toString()
+				}
+			]
+		}
 	},
 
 	async get<T>(uri: string): PResult<T, AppError> {

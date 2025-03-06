@@ -1,0 +1,107 @@
+:root {
+  --clr-primary: hsl(94, 96%, 32%);
+  --clr-primary-hover: hsl(94, 87%, 37%);
+  --clr-secondary: hsl(39, 99%, 49%);
+  --clr-secondary-hover: hsl(39, 96%, 53%);
+  --clr-secondary-100: hsl(38, 88%, 83%);
+  --clr-secondary-200: hsl(37, 93%, 74%);
+  --clr-secondary-900: hsl(38, 100%, 13%);
+  --clr-err-bg: hsl(0, 100%, 96%);
+  --clr-destructive: hsl(0, 84%, 60%);
+  --clr-destructive-hover: hsl(0, 77%, 55%);
+  --clr-white: hsl(0, 0%, 100%);
+  --clr-black: hsl(0, 0%, 0%);
+  --clr-black-hover: hsl(0, 0%, 18%);
+  --clr-text-def: var(--clr-gray-800);
+  --clr-gray-1: hsl(0, 0%, 95%);
+
+  --clr-bg-def: hsl(0, 0%, 100%);
+  --clr-gray-50: hsl(240, 9%, 98%);   /* Almost pure white, very light gray */
+  --clr-gray-100: hsl(240, 4%, 95%);   /* Extremely light gray */
+  --clr-gray-200: hsl(240, 4%, 91%);   /* Very light gray */
+  --clr-gray-300: hsl(240, 2%, 80%);   /* Light gray */
+  --clr-gray-400: hsl(240, 1%, 65%);   /* Medium light gray */
+  --clr-gray-500: hsl(240, 1%, 51%);   /* Perfect medium gray */
+  --clr-gray-600: hsl(240, 1%, 40%);   /* Medium dark gray */
+  --clr-gray-700: hsl(240, 1%, 31%);   /* Dark gray */
+  --clr-gray-800: hsl(240, 2%, 20%);   /* Very dark gray */
+  --clr-gray-900: hsl(240, 5%, 11%);   /* Almost black */
+
+  --e-width-max: 1280px;
+
+  --border-radius-sm: 10px;
+  --border-radius-md: 18px;
+  --box-shadow-card-def: rgba(0, 0, 0, 0.08) 0px 3px 3px 0px;
+
+  --font-size-def: 0.875rem;
+
+  --height-input-md: 2.125rem;
+  --height-input-lg: 2.625rem;
+
+  --width-btn-text-min: 3.875rem;
+  --paddingx-btn-def: 0.875rem;
+  --height-input-feedback-def: 1.25rem;
+
+  --screen-size-sm: 640px;
+  --screen-size-md: 768px;
+  --screen-size-lg: 1024px;
+
+  --screen-xpadding-def: 1.5rem;
+
+  * {
+    background-color: transparent;
+    margin: 0;
+    font-family: Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Cantarell,Helvetica Neue,Oxygen,Open Sans,sans-serif;
+    color: var(--clr-gray-800);
+  }
+
+  label, p {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  input, select, textarea {
+    /*TODO: fix BG color not working with dark-reader plugin*/
+    /*background-color: var(--clr-bg-def);*/
+    /*background-color: white;*/
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--clr-gray-200);
+    border-radius: var(--border-radius-sm);
+    /*font-size: 0.875rem;*/
+    /*line-height: 1.25rem;*/
+    width: 100%;
+  }
+
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+  /* --- FONT ----------------------- */
+  body {
+    font-family: ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  }
+
+  /* lg: large font sizing - for desktop */
+  --fs-2xs: 0.625rem; /* 10px */
+  --fs-xs: 0.75rem;   /* 12px */
+  --fs-sm: 0.875rem;  /* 14px */
+  --fs-base: 1rem;    /* 16px */
+  --fs-lg: 1.125rem;  /* 18px */
+  --fs-xl: 1.25rem;   /* 20px */
+  --fs-2xl: 1.5rem;   /* 24px */
+  --fs-3xl: 1.875rem; /* 30px */
+  --fs-4xl: 2.25rem;  /* 36px */
+  --fs-5xl: 3rem;     /* 48px */
+  --fs-6xl: 3.75rem;  /* 60px */
+  --fs-7xl: 4.5rem;   /* 72px */
+  --fs-8xl: 6rem;     /* 96px */
+  --fs-9xl: 8rem;     /* 128px */
+}
+
+@media (width < 768px) {
+  :root {
+    --screen-xpadding-def: 0.5rem;
+  }
+}
