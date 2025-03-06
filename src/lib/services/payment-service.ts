@@ -16,10 +16,7 @@ export async function createPayment(
 	orderID: String,
 	customerDetails: CustomerDetails
 ): PResult<Payment, AppError> {
-	return await api.post("/payments", {
-		orderId: orderID,
-		customerDetails: customerDetails
-	})
+	return await api.post("/payments", { orderID, customerDetails })
 }
 
 // NOT IMPLEMENTED IN BACKEND YET
