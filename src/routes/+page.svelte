@@ -66,7 +66,8 @@
 
 		<!-- TODO: implement -->
 		<button onclick={async () => {
-
+		
+		const [order, err] = await OrderService.setProductOnOrder(input)
 		}}>
 			Set Product On Order
 		</button>
