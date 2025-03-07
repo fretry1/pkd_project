@@ -1,16 +1,26 @@
 import { getContext, setContext } from "svelte"
 import type { Order, OrderItem, Status } from "$lib/type"
+import OrderService from "$lib/services/order-service"
 
-const ORDER_KEY = "order-store"
+export const ORDER_KEY = "order"
 
 export class OrderStore {
 	order = $state<Order>({
 		id: "",
 		created_at: "",
-		status: "CREATED" as Status,
+		status: "CREATED",
 		Items: new Map<string, OrderItem>(),
 		total: 0
 	})
+
+	async initializeNewOrder() {
+		const [o, err] = await OrderService.createOrder()
+		if (err) {
+			console.error("Failed to initialize a new order: ", err)
+			return
+		}
+		this.order = o!
+	}
 
 	// TODO: implement
 	addProductOnOrder(productId: string) {}

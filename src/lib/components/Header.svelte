@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { Order} from "$lib/type.js"
 	import type { OrderStore } from "$lib/state/order-store.svelte.js"
+	import Button from "$lib/components/std/Button.svelte"
+	import { getContext } from "svelte"
 
 	let { orderStore }: { orderStore: OrderStore } = $props()
+
 </script>
 
 
@@ -25,8 +28,9 @@
 		</div>
 
 		<div class="right">
+
 			<button aria-label="checkout" onclick={() => {
-				console.log("checkout clicked")
+				console.debug("checkout clicked")
 			}}>
 				<span class="checkout">
 					<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">

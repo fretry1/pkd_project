@@ -1,30 +1,17 @@
 <script lang="ts">
 	import type { AppError, Product } from "$lib/type"
-	import { onMount } from "svelte"
+	import { getContext, onMount } from "svelte"
 	import ProductService from "$lib/services/product-service"
 	import QtySelector from "$lib/components/QtySelector.svelte"
+	import { PRODUCT_KEY, ProductStore } from "$lib/state/product-store.svelte"
 
-	let products = $state<Product[]>([])
-	let error = $state<AppError|null>(null)
+	let productStore = getContext<ProductStore>(PRODUCT_KEY)
 
-	onMount(async () => {
-		const [arr, err] = await ProductService.getAllProducts()
-		if (err) {
-			error = err
-		}
-		products = arr!
-	})
 </script>
-
-{#if error}
-	<div class="error">
-		{JSON.stringify(error, null, 2)}
-	</div>
-{/if}
 
 <div class="wrapper">
 	<div class="grid">
-		{#each products as product (product.id)}
+		{#each productStore.products as product}
 			{@render productListing(product)}
 		{/each}
 	</div>
@@ -95,14 +82,5 @@
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
-  }
-
-  .error {
-    color: red;
-    background-color: #ffeeee;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-    white-space: pre-wrap;
   }
 </style>
