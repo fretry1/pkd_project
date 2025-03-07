@@ -3,9 +3,12 @@
 	import type { OrderStore } from "$lib/state/order-store.svelte.js"
 	import Button from "$lib/components/std/Button.svelte"
 	import { getContext } from "svelte"
+	import { goto } from "$app/navigation"
 
 	let { orderStore }: { orderStore: OrderStore } = $props()
-
+	const chart = () => {
+		goto("/checkout")
+	}
 </script>
 
 
@@ -29,9 +32,7 @@
 
 		<div class="right">
 
-			<button aria-label="checkout" onclick={() => {
-				console.debug("checkout clicked")
-			}}>
+			<button aria-label="checkout" onclick={chart}>
 				<span class="checkout">
 					<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path
