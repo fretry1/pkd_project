@@ -7,9 +7,9 @@ export const ORDER_KEY = "order"
 export class OrderStore {
 	order = $state<Order>({
 		id: "",
-		created_at: "",
+		createdAt: "",
 		status: "CREATED",
-		Items: new Map<string, OrderItem>(),
+		items: new Map<string, OrderItem>(),
 		total: 0
 	})
 
@@ -22,19 +22,38 @@ export class OrderStore {
 		this.order = o!
 	}
 
-	// TODO: implement
-	addProductOnOrder(productId: string) {}
+	async incProduct(productId: string) {
+		let qty = this.order.items.get(productId)?.quantity ?? 0
+		qty = qty === 0 ? 1 : qty + 1
+		const [updatedOrder, err] = await OrderService.setProductOnOrder(this.order.id, productId, qty)
+		if (err) {
+			console.error(`Failed to increase qty of product ${productId} on order ${this.order.id}`)
+			return
+		}
+		this.order = updatedOrder
+	}
 
 	// TODO: implement
 	removeProductFromOrder(productId: string) {}
 
 	getQuantityInCart(productId: string): number {
-		return this.order.Items.has(productId) ? this.order.Items.get(productId)!.quantity : 0
+		try {
+			console.debug(`
+			############################
+			this.order: ${JSON.stringify(this.order)}
+			############################
+			`)
+			const orderItem = this.order.items.get(productId)
+			return orderItem?.quantity ?? 0
+		} catch (e) {
+			console.error(e)
+			return 0
+		}
 	}
 
 	// TODO: perform after order payment
 	clearOrder() {
-		this.order.Items.clear()
+		this.order.items.clear()
 		this.order.total = 0
 		this.order.status = "CREATED"
 	}

@@ -4,9 +4,10 @@
 	import ProductService from "$lib/services/product-service"
 	import QtySelector from "$lib/components/QtySelector.svelte"
 	import { PRODUCT_KEY, ProductStore } from "$lib/state/product-store.svelte"
+	import { ORDER_KEY, OrderStore } from "$lib/state/order-store.svelte"
 
 	let productStore = getContext<ProductStore>(PRODUCT_KEY)
-
+	let orderStore = getContext<OrderStore>(ORDER_KEY)
 </script>
 
 <div class="wrapper">
@@ -23,9 +24,13 @@
 		<p class="product-price">BTC {p.price.toFixed(2)}</p>
 		<p class="product-description">{p.description}</p>
 		<QtySelector
-			qty={0}
-			inc={() => {}}
-			dec={() => {}}
+			qty={orderStore.getQuantityInCart(p.id)}
+			inc={() => {
+				orderStore.incProduct(p.id)
+			}}
+			dec={() => {
+
+			}}
 		/>
 	</div>
 {/snippet}

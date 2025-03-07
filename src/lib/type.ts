@@ -12,9 +12,9 @@ export type OrderItem = {
 
 export type Order = {
 	id: string
-	created_at: string
+	createdAt: string
 	status: Status
-	Items: Map<string, OrderItem>
+	items: Map<string, OrderItem>
 	total: number
 }
 
