@@ -4,8 +4,8 @@
 	import type { CustomerDetails } from "$lib/type";
 
 	// Form state
-	let customerDetails = $state<CustomerDetails>({
-		Ssn: "",
+	let input = $state<CustomerDetails>({
+		ssn: "",
 		name: "",
 		cardNumber: "",
 		country: "",
@@ -15,26 +15,64 @@
 	});
 
 	// Field validation
-	let formErrors = $state({
-		Ssn: false,
-		name: false,
-		cardNumber: false,
-		country: false,
-		city: false,
-		postalCode: false,
-		address: false
+	let errors = $state({
+		ssn: "",
+		name: "",
+		cardNumber: "",
+		country: "",
+		city: "",
+		postalCode: "",
+		address: ""
 	});
 
 	// Submit handler
 	function handleSubmit() {
-		console.log("Submitting customer details:", customerDetails);
+		console.log("Submitting customer details:", input);
+
+		errors.ssn = "";
+		errors.name = "";
+		errors.cardNumber = "";
+		errors.country = "";
+		errors.city = "";
+		errors.postalCode = "";
+		errors.address = "";
 
 		// Basic validation (would be more thorough in a real implementation)
 		let hasErrors = false;
-		for (const [key, value] of Object.entries(customerDetails)) {
-			const isEmpty = !value.trim();
-			formErrors[key as keyof typeof formErrors] = isEmpty;
-			if (isEmpty) hasErrors = true;
+
+		if (input.name.length < 1 || input.name.length > 255) {
+			errors.name = "Enter a valid name"
+			hasErrors = true;
+		}
+
+		if (input.ssn.length != 10) {
+			errors.ssn = "Enter a 10 digit ssn"
+			hasErrors = true;
+		}
+
+		if (input.cardNumber.length != 16) {
+			errors.cardNumber = "Enter a 16 digit card number"
+			hasErrors = true;
+		}
+
+		if (input.country.length < 3) {
+			errors.country = "Enter a country"
+			hasErrors = true;
+		}
+
+		if (input.city.length < 3) {
+			errors.city = "Enter a city"
+			hasErrors = true;
+		}
+
+		if (input.postalCode.length < 5) {
+			errors.postalCode = "Enter a 5 digit postal code"
+			hasErrors = true;
+		}
+
+		if (input.address.length < 5) {
+			errors.address = "Enter a valid address"
+			hasErrors = true;
 		}
 
 		if (!hasErrors) {
@@ -43,13 +81,6 @@
 		} else {
 			console.log("Form has errors, please correct them");
 		}
-	}
-
-	// Input change handler helper
-	function handleInput(field: keyof CustomerDetails, value: string) {
-		customerDetails[field] = value;
-		formErrors[field] = false; // Clear error when user types
-		console.log(`Updated ${field}:`, value);
 	}
 </script>
 
@@ -66,9 +97,9 @@
 					<Input
 						id="name"
 						size="lg"
-						value={customerDetails.name}
+						bind:value={input.name}
 						placeholder="Enter your full name"
-						feedback={formErrors.name}
+						feedback={errors.name}
 					/>
 				</div>
 
@@ -77,9 +108,9 @@
 					<Input
 						id="ssn"
 						size="lg"
-						value={customerDetails.Ssn}
+						bind:value={input.ssn}
 						placeholder="Enter your SSN"
-						feedback={formErrors.Ssn}
+						feedback={errors.ssn}
 					/>
 				</div>
 			</div>
@@ -90,9 +121,9 @@
 				<Input
 					id="cardNumber"
 					size="lg"
-					value={customerDetails.cardNumber}
+					bind:value={input.cardNumber}
 					placeholder="Enter your card number"
-					feedback={formErrors.cardNumber}
+					feedback={errors.cardNumber}
 				/>
 			</div>
 
@@ -103,9 +134,9 @@
 					<Input
 						id="country"
 						size="lg"
-						value={customerDetails.country}
+						bind:value={input.country}
 						placeholder="Country"
-						feedback={formErrors.country}
+						feedback={errors.country}
 					/>
 				</div>
 
@@ -114,9 +145,9 @@
 					<Input
 						id="city"
 						size="lg"
-						value={customerDetails.city}
+						bind:value={input.city}
 						placeholder="City"
-						feedback={formErrors.city}
+						feedback={errors.city}
 					/>
 				</div>
 			</div>
@@ -127,9 +158,9 @@
 					<Input
 						id="postalCode"
 						size="lg"
-						value={customerDetails.postalCode}
+						bind:value={input.postalCode}
 						placeholder="Postal Code"
-						feedback={formErrors.postalCode}
+						feedback={errors.postalCode}
 					/>
 				</div>
 			</div>
@@ -139,19 +170,10 @@
 				<Input
 					id="address"
 					size="lg"
-					value={customerDetails.address}
+					bind:value={input.address}
 					placeholder="Street Address"
-					feedback={formErrors.address}
+					feedback={errors.address}
 				/>
-			</div>
-
-			<div class="actions">
-				<Button size="lg" variant="secondary" onclick={() => console.log("Cancel clicked")}>
-					Back to Cart
-				</Button>
-				<Button size="lg" variant="primary" onclick={handleSubmit}>
-					Complete Purchase
-				</Button>
 			</div>
 		</div>
 
@@ -175,6 +197,15 @@
 					<span>Total</span>
 					<span>$174.98</span>
 				</div>
+			</div>
+
+			<div class="actions">
+				<Button size="lg" variant="secondary" onclick={() => console.log("Cancel clicked")}>
+					Back to Cart
+				</Button>
+				<Button size="lg" variant="primary" onclick={handleSubmit}>
+					Complete Purchase
+				</Button>
 			</div>
 		</div>
 	</div>

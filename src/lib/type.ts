@@ -27,7 +27,7 @@ export type Payment = {
 }
 
 export type CustomerDetails = {
-	Ssn: string
+	ssn: string
 	name: string
 	cardNumber: string
 	country: string

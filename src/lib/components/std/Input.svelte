@@ -10,7 +10,7 @@
         size = "md",
     } = $props()
 
-    const border = $derived(feedback ? "var(--clr-required)" : "var(--clr-gray-300)")
+    const border = $derived(feedback ? "var(--clr-destructive)" : "var(--clr-gray-300)")
 
     let height = $derived.by(() => {
         if (size === "lg") {
@@ -67,7 +67,8 @@
     border: 1px solid;
   }
   .feedback {
-    height: var(--height-input-feedback-def)
+    height: var(--height-input-feedback-def);
+    color: var(--clr-destructive);
   }
   span {
     font-weight: 400;
