@@ -1,33 +1,34 @@
 <script lang="ts">
 	import type { OrderStore } from "$lib/state/order-store.svelte"
+	import type { ProductStore } from "$lib/state/product-store.svelte"
 
-	let { orderStore }: { orderStore: OrderStore } = $props()
+	let { productStore }: { productStore: ProductStore } = $props()
 </script>
 
 <div class="filters">
 	<div class="filter-container">
 		<div class="filter-options">
 			<button
-				class="filter-btn {orderStore.activeFilter === 'nameAsc' ? 'active' : ''}"
-				onclick={() => orderStore.setActiveFilter("nameAsc")}
+				class="filter-btn {productStore.activeFilter === 'nameAsc' ? 'active' : ''}"
+				onclick={() => productStore.setActiveFilter("nameAsc")}
 			>
 				Name (A-Z)
 			</button>
 			<button
-				class="filter-btn {orderStore.activeFilter === 'nameDesc' ? 'active' : ''}"
-				onclick={() => orderStore.setActiveFilter('nameDesc')}
+				class="filter-btn {productStore.activeFilter === 'nameDesc' ? 'active' : ''}"
+				onclick={() => productStore.setActiveFilter('nameDesc')}
 			>
 				Name (Z-A)
 			</button>
 			<button
-				class="filter-btn {orderStore.activeFilter === 'priceLow' ? 'active' : ''}"
-				onclick={() => orderStore.setActiveFilter('priceLow')}
+				class="filter-btn {productStore.activeFilter === 'priceLow' ? 'active' : ''}"
+				onclick={() => productStore.setActiveFilter('priceLow')}
 			>
 				Price (Low-High)
 			</button>
 			<button
-				class="filter-btn {orderStore.activeFilter === 'priceHigh' ? 'active' : ''}"
-				onclick={() => orderStore.setActiveFilter('priceHigh')}
+				class="filter-btn {productStore.activeFilter === 'priceHigh' ? 'active' : ''}"
+				onclick={() => productStore.setActiveFilter('priceHigh')}
 			>
 				Price (High-Low)
 			</button>

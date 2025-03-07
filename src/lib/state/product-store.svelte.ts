@@ -14,6 +14,27 @@ export class ProductStore {
 		this.products = products
 	}
 
+	activeFilter = $state<"nameAsc" | "nameDesc" | "priceLow" | "priceHigh">("nameAsc")
+
+	setActiveFilter(f: "nameAsc" | "nameDesc" | "priceLow" | "priceHigh") {
+		console.debug(`setting ${f}`)
+		switch (f) {
+			case "nameAsc":
+				this.sortProducts("name", "asc")
+				break
+			case "nameDesc":
+				this.sortProducts("name", "desc")
+				break
+			case "priceLow":
+				this.sortProducts("price", "asc")
+				break
+			case "priceHigh":
+				this.sortProducts("price", "desc")
+				break
+		}
+		this.activeFilter = f
+	}
+
 	#sortByPrice(prod: Product[], mode?: "asc" | "desc"): Product[] {
 		return mode === "asc"
 			? prod.sort((a, b) => a.price - b.price)

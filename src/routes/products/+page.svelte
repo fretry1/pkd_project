@@ -15,7 +15,7 @@
 
 <div class="wrapper">
 
-	<Filters {orderStore}/>
+	<Filters {productStore}/>
 
 	<div class="grid">
 		{#each productStore.products as product}

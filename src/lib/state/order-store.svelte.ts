@@ -12,11 +12,6 @@ export class OrderStore {
 		items: new Map<string, OrderItem>(),
 		total: 0
 	})
-	activeFilter = $state<"nameAsc" | "nameDesc" | "priceLow" | "priceHigh">("nameAsc")
-
-	setActiveFilter(f: "nameAsc" | "nameDesc" | "priceLow" | "priceHigh") {
-		this.activeFilter = f
-	}
 
 	async initializeNewOrder() {
 		const [o, err] = await OrderService.createOrder()
