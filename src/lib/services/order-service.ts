@@ -20,19 +20,19 @@ import { api } from "./api"
  * 	total: number
  * }
  */
-function parseOrder(json: any): Promise<Order, AppError> {
-	try {
-		// Parsing logic goes here
-	} catch(ex) {
-		return [null, {
-			code: // error code here
-			message: // error message here
-		}]
-	}
-}
+// function parseOrder(json: any): Promise<Order, AppError> {
+// 	try {
+// 		// Parsing logic goes here
+// 	} catch(ex) {
+// 		return [null, {
+// 			code: // error code here
+// 			message: // error message here
+// 		}]
+// 	}
+// }
 
 async function createOrder(): PResult<Order, AppError> {
-	return (await api.post("/orders"))
+	return await api.post("/orders")
 }
 
 async function getAllOrders(): PResult<Order[], AppError> {

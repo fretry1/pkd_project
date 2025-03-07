@@ -5,12 +5,18 @@
 	import QtySelector from "$lib/components/QtySelector.svelte"
 	import { PRODUCT_KEY, ProductStore } from "$lib/state/product-store.svelte"
 	import { ORDER_KEY, OrderStore } from "$lib/state/order-store.svelte"
+	import Filters from "$lib/components/Filters.svelte"
 
 	let productStore = getContext<ProductStore>(PRODUCT_KEY)
 	let orderStore = getContext<OrderStore>(ORDER_KEY)
+
+	let activeFilter = $state("nameAsc")
 </script>
 
 <div class="wrapper">
+
+	<Filters {orderStore}/>
+
 	<div class="grid">
 		{#each productStore.products as product}
 			{@render productListing(product)}
@@ -39,10 +45,9 @@
   .wrapper {
     width: 100%;
     height: calc(100vh - 61px);
-    padding: 2rem;
+    padding: 1rem;
     overflow-y: auto;
   }
-
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
