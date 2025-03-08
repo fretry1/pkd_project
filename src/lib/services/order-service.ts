@@ -21,6 +21,12 @@ import { api } from "./api"
  * 	total: number
  * }
  */
+
+/**
+ * Parses a JSON object into an Order object.
+ * @param json - The JSON object to parse.
+ * @returns A Result containing the parsed Order object or an AppError.
+ */
 function parseOrder(json: any): Result<Order, AppError> {
 	try {
 		// Parsing logic goes here
@@ -37,7 +43,7 @@ function parseOrder(json: any): Result<Order, AppError> {
 		json.items = map
 
 		return [json as Order, null]
-	} catch (ex) {
+	} catch (ex: any) {
 		return [
 			null,
 			{
@@ -48,6 +54,10 @@ function parseOrder(json: any): Result<Order, AppError> {
 	}
 }
 
+/**
+ * Creates a new order.
+ * @returns A PResult containing the created Order object or an AppError.
+ */
 async function createOrder(): PResult<Order, AppError> {
 	const [created, err] = await api.post("/orders")
 	if (err) return [null, err]
@@ -57,10 +67,21 @@ async function createOrder(): PResult<Order, AppError> {
 	return [parsed, null]
 }
 
+/**
+ * Retrieves all orders.
+ * @returns A PResult containing an array of Order objects or an AppError.
+ */
 async function getAllOrders(): PResult<Order[], AppError> {
 	return api.get("/orders")
 }
 
+/**
+ * Sets a product on an order with a specified quantity.
+ * @param orderId - The ID of the order.
+ * @param productId - The ID of the product.
+ * @param quantity - The quantity of the product to set on the order.
+ * @returns A PResult containing the updated Order object or an AppError.
+ */
 async function setProductOnOrder(
 	orderId: string,
 	productId: string,
@@ -75,12 +96,23 @@ async function setProductOnOrder(
 }
 
 // No use-case yet
+/**
+ * Modifies the status of an order.
+ * @param orderId - The ID of the order.
+ * @param options - The new status to set on the order.
+ * @returns A PResult containing the updated Order object or an AppError.
+ */
 async function modifyOrderStatus(orderId: string, options: string): PResult<Order, AppError> {
 	const status = options.toUpperCase()
 	return api.put(orderId, { status })
 }
 
 // No use-case yet
+/**
+ * Removes an order by ID. If the ID is "ALL", removes all orders.
+ * @param id - The ID of the order to remove, or "ALL" to remove all orders.
+ * @returns A Promise that resolves to void or a number.
+ */
 async function removeOrder(id: string): Promise<void | number> {
 	if (id === "ALL") {
 		return api.delUgly(`/orders`)

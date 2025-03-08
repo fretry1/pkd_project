@@ -12,6 +12,12 @@ import type {
 } from "$lib/type"
 import { api } from "./api"
 
+/**
+ * Issues a payment for a given order with the provided order id and customer details.
+ * @param orderId - The ID of the order.
+ * @param customerDetails - The details of the customer making the payment.
+ * @returns A PResult containing the Payment object or an AppError.
+ */
 export async function issuePayment(
 	orderId: String,
 	customerDetails: CustomerDetails
@@ -20,6 +26,10 @@ export async function issuePayment(
 }
 
 // NOT IMPLEMENTED IN BACKEND YET
+/**
+ * Creates customer details.
+ * @returns A PResult containing the CustomerDetails object or an AppError.
+ */
 async function createCustomerDetails(): PResult<CustomerDetails, AppError> {
 	return api.post("/payment")
 }

@@ -11,7 +11,11 @@ import type {
 } from "$lib/type"
 import { api } from "./api"
 
-async function getAllProducts(): PResult<Product[], AppError> {
+/**
+ * Retrieves all products from Go server.
+ * @returns A PResult containing an array of Product objects or an AppError.
+ */
+export async function getAllProducts(): PResult<Product[], AppError> {
 	return await api.get("/products")
 }
 
