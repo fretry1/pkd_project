@@ -1,6 +1,5 @@
 import productService, { getAllProducts } from "./product-service"
 import orderService from "./order-service"
-import { CustomerDetails, Order } from "$lib/type"
 
 console.log("Start")
 
