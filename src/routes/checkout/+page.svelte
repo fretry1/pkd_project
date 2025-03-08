@@ -1,7 +1,22 @@
 <script lang="ts">
 	import Input from "$lib/components/std/Input.svelte";
 	import Button from "$lib/components/std/Button.svelte";
-	import type { CustomerDetails } from "$lib/type";
+	import type { CustomerDetails, Payment } from "$lib/type"
+	import { getContext } from "svelte"
+	import { ORDER_KEY, type OrderStore } from "$lib/state/order-store.svelte"
+	import PaymentService from "$lib/services/payment-service"
+	import { goto, invalidateAll } from "$app/navigation"
+	import ReceiptModal from "$lib/components/ReceiptModal.svelte"
+
+	const orderStore = getContext<OrderStore>(ORDER_KEY)
+
+	let receipt = $state<Payment|null>(null)
+
+	const onClose = async () => {
+		await orderStore.initializeNewOrder()
+		await goto("/products")
+		console.debug("navigated to products and invalidated state")
+	}
 
 	// Form state
 	let input = $state<CustomerDetails>({
@@ -25,9 +40,19 @@
 		address: ""
 	});
 
+	const imLazy = () => {
+		input.ssn = "0011223344"
+		input.name = "Foo"
+		input.cardNumber = "1111222233334444"
+		input.country = "Sweden"
+		input.city = "Uppsala"
+		input.postalCode = "75432"
+		input.address = "Körvelgatan 2"
+	}
+
 	// Submit handler
-	function handleSubmit() {
-		console.log("Submitting customer details:", input);
+	async function handleSubmit() {
+		console.log("Submitting customer details");
 
 		errors.ssn = "";
 		errors.name = "";
@@ -75,21 +100,32 @@
 			hasErrors = true;
 		}
 
-		if (!hasErrors) {
-			console.log("Form is valid, processing order");
-			// Here you would call your order processing function
-		} else {
-			console.log("Form has errors, please correct them");
+		if (hasErrors) {
+			return
 		}
+
+		console.log("Form is valid, processing order");
+		const orderId = orderStore.order.id
+		const details = $state.snapshot<CustomerDetails>(input)
+		const [rec, err] = await PaymentService.issuePayment(orderId, details)
+		if (err) {
+			console.error("Failed to issue payment:", err)
+			return
+		}
+		receipt = rec
 	}
 </script>
+
+{#if receipt}
+	<ReceiptModal {receipt} {onClose}/>
+{/if}
 
 <div class="checkout-container">
 	<h1 class="checkout-title">Checkout</h1>
 
 	<div class="checkout-content">
 		<div class="checkout-form">
-			<h2>Personal Information</h2>
+			<h2 onclick={imLazy}>Personal Information</h2>
 
 			<div class="form-row">
 				<div class="form-group">
@@ -177,37 +213,54 @@
 			</div>
 		</div>
 
-		<div class="order-summary">
-			<h2>Order Summary</h2>
-			<div class="summary-content">
-				<div class="summary-row">
-					<span>Subtotal</span>
-					<span>$149.99</span>
-				</div>
-				<div class="summary-row">
-					<span>Shipping</span>
-					<span>$9.99</span>
-				</div>
-				<div class="summary-row">
-					<span>Tax</span>
-					<span>$15.00</span>
-				</div>
-				<div class="summary-divider"></div>
-				<div class="summary-row total">
-					<span>Total</span>
-					<span>$174.98</span>
+		<div>
+			<div class="card">
+				<h2>Products</h2>
+				<div class="product-list">
+					{#each orderStore.order.items as [key, item]}
+						<div class="product">
+							<div class="left">
+								<span>{item.quantity}</span>
+								<span>{item.product.title}</span>
+							</div>
+								<div class="right">
+									<span>{(item.product.price * item.quantity).toFixed(2)}</span>
+								</div>
+						</div>
+					{/each}
 				</div>
 			</div>
 
-			<div class="actions">
-				<Button size="lg" variant="secondary" onclick={() => console.log("Cancel clicked")}>
-					Back to Cart
-				</Button>
-				<Button size="lg" variant="primary" onclick={handleSubmit}>
-					Complete Purchase
-				</Button>
+			<div class="card">
+				<h2>Order Summary</h2>
+				<div class="summary-content">
+					<div class="summary-row">
+						<span>Subtotal</span>
+						<span>{orderStore.order.total.toFixed(2)}</span>
+					</div>
+					<div class="summary-row">
+						<span>Shipping</span>
+						<span>free</span>
+					</div>
+					<div class="summary-row">
+						<span>Tax</span>
+						<span>{(orderStore.order.total / 12.5).toFixed(2)}</span>
+					</div>
+					<div class="summary-divider"></div>
+					<div class="summary-row total">
+						<span>Total</span>
+						<span>{orderStore.order.total.toFixed(2)} BTC</span>
+					</div>
+				</div>
+
+				<div class="actions">
+					<Button width="100%" size="lg" variant="primary" onclick={handleSubmit}>
+						Complete Purchase
+					</Button>
+				</div>
 			</div>
 		</div>
+
 	</div>
 </div>
 
@@ -272,15 +325,16 @@
     gap: 1rem;
   }
 
-  .order-summary {
+  .card {
     background-color: white;
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     align-self: start;
+		margin-bottom: 2rem;
   }
 
-  .order-summary h2 {
+  .card h2 {
     font-size: 1.25rem;
     margin-bottom: 1.5rem;
     color: #333;
@@ -309,6 +363,13 @@
     font-size: 1.1rem;
     padding-top: 0.5rem;
   }
+
+	.product {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin-bottom: 0.25rem;
+	}
 
   @media (max-width: 900px) {
     .checkout-content {

@@ -7,7 +7,8 @@ import type {
 	CustomerDetails,
 	Receipt,
 	PResult,
-	AppError
+	AppError,
+	Result
 } from "$lib/type"
 import { api } from "./api"
 
@@ -20,19 +21,40 @@ import { api } from "./api"
  * 	total: number
  * }
  */
-// function parseOrder(json: any): Promise<Order, AppError> {
-// 	try {
-// 		// Parsing logic goes here
-// 	} catch(ex) {
-// 		return [null, {
-// 			code: // error code here
-// 			message: // error message here
-// 		}]
-// 	}
-// }
+function parseOrder(json: any): Result<Order, AppError> {
+	try {
+		// Parsing logic goes here
+
+		const items = json.items // ska finnas där enligt typ-beskrivningen
+		// hämta keys och values from items (entries, values)
+		const keys = Object.entries(items)
+		const map = new Map()
+		for (let i = 0; i < keys.length; i++) {
+			const [key, value] = keys[i]
+			map.set(key, value)
+		}
+
+		json.items = map
+
+		return [json as Order, null]
+	} catch (ex) {
+		return [
+			null,
+			{
+				code: "json parse error",
+				message: ex.toString()
+			}
+		]
+	}
+}
 
 async function createOrder(): PResult<Order, AppError> {
-	return await api.post("/orders")
+	const [created, err] = await api.post("/orders")
+	if (err) return [null, err]
+	const [parsed, parseErr] = parseOrder(created)
+	if (parseErr) return [null, parseErr]
+	console.log("Parsed order: ", parsed)
+	return [parsed, null]
 }
 
 async function getAllOrders(): PResult<Order[], AppError> {
@@ -44,7 +66,12 @@ async function setProductOnOrder(
 	productId: string,
 	quantity: number
 ): PResult<Order, AppError> {
-	return api.put(orderId + "/products/" + productId, { quantity })
+	const [order, err] = await api.put(`/orders/${orderId}/products/${productId}`, { quantity })
+	if (err) return [null, err]
+	const [parsed, parseErr] = parseOrder(order)
+	if (parseErr) return [null, parseErr]
+	console.log("Parsed order: ", parsed)
+	return [parsed, null]
 }
 
 // No use-case yet

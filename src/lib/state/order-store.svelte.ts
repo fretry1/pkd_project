@@ -22,12 +22,13 @@ export class OrderStore {
 		this.order = o!
 	}
 
-	async incProduct(productId: string) {
+	async changeQtyOfProduct(productId: string, s: "inc" | "dec") {
 		let qty = this.order.items.get(productId)?.quantity ?? 0
-		qty = qty === 0 ? 1 : qty + 1
+		if (qty === 0 && s === "dec") return
+		qty = qty === 0 ? 1 : qty + (s === "inc" ? 1 : -1)
 		const [updatedOrder, err] = await OrderService.setProductOnOrder(this.order.id, productId, qty)
 		if (err) {
-			console.error(`Failed to increase qty of product ${productId} on order ${this.order.id}`)
+			console.error(`Failed to ${s} qty of product ${productId} on order ${this.order.id}`)
 			return
 		}
 		this.order = updatedOrder
@@ -38,11 +39,6 @@ export class OrderStore {
 
 	getQuantityInCart(productId: string): number {
 		try {
-			console.debug(`
-			############################
-			this.order: ${JSON.stringify(this.order)}
-			############################
-			`)
 			const orderItem = this.order.items.get(productId)
 			return orderItem?.quantity ?? 0
 		} catch (e) {

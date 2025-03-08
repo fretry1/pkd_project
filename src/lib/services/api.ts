@@ -17,7 +17,8 @@ export const api = {
 			let res = await fetch(`${BASE_URL}${uri}`, {
 				method: method,
 				headers: {
-					accept: "application/json"
+					accept: "application/json",
+					"content-type": "application/json"
 				},
 				body: payload
 			})
@@ -27,10 +28,8 @@ export const api = {
 			console.log(res.status)
 			let resObj = await res.json()
 			if (!res.ok) {
-				let err: AppError = JSON.parse(resObj)
-				// let err: AppError = { code: "", message: "" }
-				console.log(err)
-				return [null, err]
+				console.log(resObj)
+				return [null, resObj]
 			}
 
 			return [resObj, null]

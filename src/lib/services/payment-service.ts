@@ -12,11 +12,11 @@ import type {
 } from "$lib/type"
 import { api } from "./api"
 
-export async function createPayment(
-	orderID: String,
+export async function issuePayment(
+	orderId: String,
 	customerDetails: CustomerDetails
 ): PResult<Payment, AppError> {
-	return await api.post("/payments", { orderID, customerDetails })
+	return await api.post("/payments", { orderId, customerDetails })
 }
 
 // NOT IMPLEMENTED IN BACKEND YET
@@ -57,7 +57,6 @@ async function findReceipt(id: string): PResult<Receipt, AppError> {
 	return api.get(`/receipt/${id}`)
 }
 
-// TODO: implement
-async function issuePayment(orderId: string, details: CustomerDetails): PResult<Order, AppError> {}
-
-export default {}
+export default {
+	issuePayment
+}

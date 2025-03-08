@@ -10,7 +10,7 @@
 	let productStore = getContext<ProductStore>(PRODUCT_KEY)
 	let orderStore = getContext<OrderStore>(ORDER_KEY)
 
-	let activeFilter = $state("nameAsc")
+
 </script>
 
 <div class="wrapper">
@@ -32,10 +32,10 @@
 		<QtySelector
 			qty={orderStore.getQuantityInCart(p.id)}
 			inc={() => {
-				orderStore.incProduct(p.id)
+				orderStore.changeQtyOfProduct(p.id, "inc")
 			}}
 			dec={() => {
-
+				orderStore.changeQtyOfProduct(p.id, "dec")
 			}}
 		/>
 	</div>
