@@ -123,6 +123,7 @@ async function removeOrder(id: string): Promise<void | number> {
 export default {
 	createOrder,
 	getAllOrders,
-	setProductOnOrder
+	setProductOnOrder,
+	removeOrder
 	// ...
 }
